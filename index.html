@@ -4,24 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Собери uAnalytiCon</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="game-wrapper">
+        <!-- Верхняя панель: информация об игре -->
+        <header class="game-header">
+            <h1>🎓 Собери uAnalytiCon</h1>
+            <div class="game-info">
+                <div class="player-info">
+                    <span class="player-name">Игрок 1</span>
+                    <span class="score">Очки: <span id="current-score">0</span></span>
+                </div>
+                <div class="game-status">
+                    <span>Ход: <span id="current-turn">1</span></span>
+                    <span>Карты часов: <span id="clocks-used">0</span>/3</span>
+                </div>
+            </div>
+        </header>
 
-    <header>
-        <h1>Собери uAnalytiCon</h1>
-    </header>
+        <!-- Основная игровая область -->
+        <main class="game-main">
+            <!-- Левая панель: рука игрока и колоды -->
+            <aside class="left-panel">
+                <div class="hand-section">
+                    <h3>📋 Ваша рука</h3>
+                    <div class="hand-cards" id="player-hand">
+                        <!-- Карты генерируются через JS -->
+                    </div>
+                    <div class="deck-info">
+                        <div class="deck-pile" id="guest-deck">
+                            <span>📚 Колода тем</span>
+                            <span class="deck-count" id="guest-deck-count">0</span>
+                        </div>
+                        <div class="deck-pile" id="shape-deck">
+                            <span>🔷 Колода фигур</span>
+                            <span class="deck-count" id="shape-deck-count">0</span>
+                        </div>
+                    </div>
+                </div>
 
-    <main id="game-container">
-        <!-- Здесь будет игровое поле -->
-        <p>Загрузка игры...</p>
-    </main>
+                <div class="actions-section">
+                    <h3>⚡ Особые действия</h3>
+                    <div class="special-actions">
+                        <button class="action-btn" id="btn-lights-out" disabled>
+                            🌙 Тушите свет
+                        </button>
+                        <button class="action-btn" id="btn-masquerade" disabled>
+                            🎭 Маскарад
+                        </button>
+                        <button class="action-btn" id="btn-dancefloor" disabled>
+                            💃 Вращающийся танцпол
+                        </button>
+                    </div>
+                </div>
+            </aside>
 
-    <footer>
-        <p>УрФУ</p>
-    </footer>
+            <!-- Центральная панель: игровое поле (планшет) -->
+            <section class="center-panel">
+                <div class="board-container">
+                    <h3>🏰 Программа конференции</h3>
 
-    <!-- Подключение скрипта (логику игры напишем позже) -->
-    <script src="script.js"></script>
+                    <!-- Текущая фигура для размещения -->
+                    <div class="current-shape" id="current-shape">
+                        <h4>Текущая фигура</h4>
+                        <div class="shape-preview" id="shape-preview">
+                            <!-- Фигура генерируется через JS -->
+                        </div>
+                    </div>
+
+                    <!-- Основное игровое поле -->
+                    <div class="game-board" id="game-board">
+                        <!-- Сетка генерируется через JS -->
+                    </div>
+
+                    <!-- Зоны вне основного поля -->
+                    <div class="out-of-board">
+                        <div class="bridge-zone" id="bridge-zone">
+                            <h4>🌉 Статус слушателя (Мост)</h4>
+                            <div class="zone-cards" id="bridge-cards"></div>
+                            <span class="zone-info">0 очков за каждую карту</span>
+                        </div>
+                        <div class="moat-zone" id="moat-zone">
+                            <h4>🚫 Отклонённые (Ров)</h4>
+                            <div class="zone-cards" id="moat-cards"></div>
+                            <span class="zone-info">-1 очко за каждую карту</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Правая панель: события и статистика -->
+            <aside class="right-panel">
+                <div class="events-section">
+                    <h3>🎉 События</h3>
+                    <div class="events-list">
+                        <button class="event-btn" id="btn-fireworks" disabled>
+                            🎆 Фейерверк
+                        </button>
+                        <button class="event-btn" id="btn-lambada" disabled>
+                            💃 Ламбада
+                        </button>
+                        <button class="event-btn" id="btn-toast" disabled>
+                            🥂 Тост за короля
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 Статистика</h3>
+                    <div class="stats-list" id="stats-list">
+                        <div class="stat-item">
+                            <span>Группы:</span>
+                            <span id="stat-groups">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Единороги:</span>
+                            <span id="stat-unicorns">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Использовано действий:</span>
+                            <span id="stat-actions">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Штрафы:</span>
+                            <span id="stat-penalties">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <h3>🎮 Управление</h3>
+                    <button class="control-btn" id="btn-draw-shape">Взять фигуру</button>
+                    <button class="control-btn" id="btn-place-shape">Разместить фигуру</button>
+                    <button class="control-btn" id="btn-end-turn">Завершить ход</button>
+                    <button class="control-btn btn-danger" id="btn-reset-game">Новая игра</button>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Модальное окно для событий -->
+        <div class="modal" id="event-modal">
+            <div class="modal-content">
+                <h2>🕐 Пробили часы!</h2>
+                <p>Выберите событие для активации:</p>
+                <div class="modal-events">
+                    <button class="modal-event-btn" data-event="fireworks">🎆 Фейерверк</button>
+                    <button class="modal-event-btn" data-event="lambada">💃 Ламбада</button>
+                    <button class="modal-event-btn" data-event="toast">🥂 Тост за короля</button>
+                </div>
+                <button class="close-modal" id="close-modal">Закрыть</button>
+            </div>
+        </div>
+
+        <!-- Подвал -->
+        <footer class="game-footer">
+            <p>Академическая адаптация игры «Замок монстров» | uAnalytiCon 2026</p>
+            <p>Разработано командой университета</p>
+        </footer>
+    </div>
+
+    <!-- Подключение скриптов -->
+    <script src="js/deck.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>
